@@ -10,8 +10,17 @@ use App\Models\Categorie;
 
 class CategoriesController extends Controller
 {
-    public function create() {
+    public function index() {
         $categories = Categorie::all();
         return view('app.categories.show', compact('categories'));
+    }
+    
+    public function show($category): View
+    {
+        $tracks = $category->tracks()
+            ->withCount('likes')
+            ->orderBy('likes_count');
+
+        return view('app.categories.show', compact('category', 'tracks'));
     }
 }
